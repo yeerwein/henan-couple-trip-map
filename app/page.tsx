@@ -27,6 +27,7 @@ const places: Place[] = [
   { id:'white-horse', name:'白马寺', region:'洛阳', category:'人文', score:4, lat:34.7243309, lng:112.5981357, duration:'2–3小时', verdict:'佛教文化线推荐', reason:'中国早期官办佛寺代表，传统寺院、齐云塔与多国佛殿形成鲜明对照。', tip:'只认官方公众号预约，不购买第三方代售票；尊重宗教场所着装与拍摄规定。' },
   { id:'luoyang-museum', name:'洛阳博物馆', region:'洛阳', category:'人文', score:4, lat:34.6442575, lng:112.4457027, duration:'3小时', verdict:'抢到票就去', reason:'河洛文明、古代石刻、唐三彩和珍宝馆能把洛阳遗址串成完整历史。', tip:'免费但须官方预约，第三方“讲解包门票”风险高；开馆后优先珍宝馆。' },
   { id:'hanwei', name:'汉魏洛阳故城遗址博物馆', region:'洛阳', category:'人文', score:4, lat:34.7239038, lng:112.6088595, duration:'2–3小时', verdict:'白马寺顺路', reason:'以都城考古解释汉魏洛阳，与白马寺相距很近，是洛阳东线最顺手的组合。', tip:'更偏遗址与考古叙事，不是网红拍照型景点；建议先看展再看遗址环境。' },
+  { id:'ancient-tombs', name:'洛阳古墓博物馆', region:'洛阳', category:'人文', score:4, lat:34.7341, lng:112.4090, duration:'2–2.5小时', verdict:'小众但硬核', reason:'世界上第一座古墓博物馆，把上自西汉、下迄宋金的二十余座典型墓葬整体搬迁复原，可以真正走进一间间墓室；另设北魏景陵原址地宫与河南古代壁画馆。', tip:'免费但须提前用官方渠道实名预约，现场不受理；9:00–17:00、16:30 停止入馆，周一闭馆（法定节假日除外）。主体在地下，墓室阴凉光暗通道窄，加件外套穿防滑鞋。' },
   { id:'luoyi-ancient-city', name:'洛邑古城', region:'洛阳', category:'主题园区', score:4, lat:34.6821347, lng:112.4784784, duration:'2–3小时', verdict:'夜间体验代表', reason:'以金元古城墙遗址、文峰塔和新潭水系为核心的仿古街区，集中了汉服体验、非遗展示与临水夜景。', tip:'约18:30亮灯后最出片；旺季分时段限流，国庆务必提前一天预约，建议乘地铁或停远处步行进入。' },
   { id:'suitang-city', name:'隋唐洛阳城·明堂天堂与应天门', region:'洛阳', category:'人文', score:4, lat:34.6813400, lng:112.4540900, duration:'半天', verdict:'夜游高性价比', reason:'在隋唐宫城中轴线上复建的明堂、天堂与应天门，用建筑体量和灯光秀还原武周洛阳的都城气势。', tip:'应天门、明堂天堂、九洲池分别售票，可买通票；应天门灯光投影约 19:30 后最佳，白天棚内闷热要带水。' },
   { id:'laojunshan', name:'老君山', region:'栾川', category:'自然＋人文', score:4, lat:33.7677616, lng:111.644368, duration:'1整天', verdict:'风光强·人流风险高', amapPoi:'https://ditu.amap.com/place/B017B01NH7', reason:'十里画屏的花岗岩峰林与金顶道观群辨识度极高，是伏牛山段的自然核心。', tip:'门票不含索道；国庆索道排队和山顶大雾会决定体验，不建议为亮灯夜爬。', videoRating:'人上人', videoTime:'00:04:20', videoReview:'视频认为它网红属性强，是河南旅游代表，但景区较小且相似景观在河南有平替。', videoTip:'最大风险是人流过大导致体验下降；除了山顶，其他景观替代性较强。' },
@@ -63,7 +64,7 @@ function amapUrl(p:Place){if(p.amapPoi)return p.amapPoi;const [lng,lat]=wgsToGcj
 function amapSearch(name:string){return `https://uri.amap.com/search?keyword=${encodeURIComponent(name)}&city=%E6%B2%B3%E5%8D%97&src=henan-trip-map&callnative=1`}
 function videoUrl(time?:string){if(!time)return VIDEO_URL;const [h,m,s]=time.split(':').map(Number);return `${VIDEO_URL}?t=${h*3600+m*60+s}`}
 function Stars({score}:{score:number}){return <span className="stars" aria-label={`推荐值 ${score} 分`}>{'★'.repeat(score)}<i>{'★'.repeat(5-score)}</i></span>}
-function modeIcon(mode: TransportLeg['mode']){return mode==='高铁'?'🚄':mode==='景区交通'?'🚌':mode==='步行'?'🥾':'🚗'}
+function modeIcon(mode: TransportLeg['mode']){return mode==='高铁'?'🚄':mode==='景区交通'||mode==='大巴'?'🚌':mode==='步行'?'🥾':'🚗'}
 function routePlaceIds(route:RoutePlan,day:number|'all'){const days=day==='all'?route.itinerary:route.itinerary.filter(item=>item.day===day);return Array.from(new Set(days.flatMap(item=>item.placeIds)))}
 const cityCoords:Record<string,[number,number]>={郑州:[34.75,113.62],登封:[34.46,113.04],洛阳:[34.62,112.45],新安:[34.73,112.15],嵩县:[34.13,112.09],栾川:[33.79,111.62],焦作:[35.22,113.24],辉县:[35.46,113.80],修武:[35.22,113.44],开封:[34.7971,114.3073],中牟:[34.7189,113.9762]};
 function dayCoordinate(day:RoutePlan['itinerary'][number]):[number,number]{const dayPlaces=day.placeIds.map(id=>places.find(place=>place.id===id)).filter(Boolean) as Place[];if(dayPlaces.length)return [dayPlaces.reduce((sum,p)=>sum+p.lat,0)/dayPlaces.length,dayPlaces.reduce((sum,p)=>sum+p.lng,0)/dayPlaces.length];const candidates=day.region.split('/').map(name=>name.trim()).reverse();const city=candidates.find(name=>cityCoords[name]);return city?cityCoords[city]:[34.35,113.1]}
@@ -75,9 +76,9 @@ function dayNodeLabel(day:RoutePlan['itinerary'][number]){const names=day.placeI
 
 export default function Home(){
   const mapNode=useRef<HTMLDivElement>(null), mapRef=useRef<LeafletMap|null>(null), markersRef=useRef<Map<string,LeafletMarker>>(new Map()), routeLayerRef=useRef<LayerGroup|null>(null);
-  const [viewMode,setViewMode]=useState<ViewMode>('places');
+  const [viewMode,setViewMode]=useState<ViewMode>('routes');
   const [region,setRegion]=useState<string>('全部'),[activeId,setActiveId]=useState('longmen'),[mapReady,setMapReady]=useState(false);
-  const [routeDays,setRouteDays]=useState<5|6|7>(7),[activeRouteId,setActiveRouteId]=useState('route-7b'),[activeDay,setActiveDay]=useState<number|'all'>('all');
+  const [routeDays,setRouteDays]=useState<5|6|7>(6),[activeRouteId,setActiveRouteId]=useState('route-6f'),[activeDay,setActiveDay]=useState<number|'all'>('all');
   const visible=useMemo(()=>region==='全部'?places:places.filter(p=>p.region===region),[region]);
   const active=places.find(p=>p.id===activeId)??places[0];
   const routeOptions=useMemo(()=>routePlans.filter(route=>route.days===routeDays),[routeDays]);
@@ -103,7 +104,7 @@ export default function Home(){
         <button role="tab" aria-selected={viewMode==='places'} className={viewMode==='places'?'active':''} onClick={()=>switchView('places')}><span>地点</span>景点地图</button>
         <button role="tab" aria-selected={viewMode==='routes'} className={viewMode==='routes'?'active':''} onClick={()=>switchView('routes')}><span>路线</span>行程规划</button>
       </div>
-      <div className="route-summary"><span>{viewMode==='places'?'地图内容':'已规划路线'}</span><strong>{viewMode==='places'?'36 处地点':'5 / 6 / 7 日 · 共 9 条'}</strong></div>
+      <div className="route-summary"><span>{viewMode==='places'?'地图内容':'已规划路线'}</span><strong>{viewMode==='places'?'37 处地点':'5 / 6 / 7 日 · 共 10 条'}</strong></div>
     </header>
 
     {viewMode==='places'?<section className="toolbar" aria-label="地区筛选"><div className="region-tabs">{regions.map(r=><button key={r} className={region===r?'active':''} onClick={()=>setRegion(r)}>{r}<small>{r==='全部'?places.length:places.filter(p=>p.region===r).length}</small></button>)}</div><div className="legend"><span><b className="legend-dot top"/>5分强推</span><span><b className="legend-dot good"/>4分推荐</span><span><b className="legend-dot optional"/>3分顺路</span><span><b className="legend-dot avoid"/>1分慎选</span></div></section>:
@@ -111,7 +112,7 @@ export default function Home(){
 
     <section className="map-layout">
       {viewMode==='places'?<aside className="place-list"><div className="list-head"><strong>{region==='全部'?'全部地点':`${region}地点`}</strong><span>{visible.length}处</span></div><div className="cards-scroll">{visible.map(p=><button key={p.id} className={`place-row ${activeId===p.id?'selected':''}`} onClick={()=>focus(p)}><span className={`score-badge score-${p.score}`}>{p.score}</span><span className="place-copy"><strong>{p.name}</strong><small>{p.category} · {p.duration}{p.videoRating?` · 视频：${p.videoRating}`:''}</small></span><span className="row-arrow">↗</span></button>)}</div></aside>:
-        <aside className="route-list"><div className="list-head"><div><strong>{routeDays} 日方案</strong><small>选择一条路线查看每日安排</small></div><span>{routeOptions.length}条</span></div><div className="cards-scroll route-cards">{routeOptions.map(route=><button key={route.id} className={`route-card ${activeRoute.id===route.id?'selected':''}`} style={{'--route-color':route.color} as React.CSSProperties} onClick={()=>chooseRoute(route)}><div className="route-card-head"><span className="route-code">{route.code}</span>{route.featured&&<span className="recommend-chip">首选</span>}<span className={`pace pace-${route.pace}`}>{route.pace}</span></div><strong>{route.name}</strong><small>{route.theme} · {route.cities.join(' → ')}</small><p>{route.summary}</p><div className="route-metrics"><span><b>{route.fiveScoreIds.length}</b> 个5分点</span><span><b>{route.hotelMoves}</b> 次换酒店</span></div><div className="route-card-foot"><span>{route.longestLeg}</span><b>查看路线 ↗</b></div></button>)}</div></aside>}
+        <aside className="route-list"><div className="list-head"><div><strong>{routeDays} 日方案</strong><small>选择一条路线查看每日安排</small></div><span>{routeOptions.length}条</span></div><div className="cards-scroll route-cards">{routeOptions.map(route=><button key={route.id} className={`route-card ${activeRoute.id===route.id?'selected':''}`} style={{'--route-color':route.color} as React.CSSProperties} onClick={()=>chooseRoute(route)}><div className="route-card-head"><span className="route-code">{route.code}</span>{route.confirmed?<span className="recommend-chip confirmed-chip">已定</span>:route.featured&&<span className="recommend-chip">首选</span>}<span className={`pace pace-${route.pace}`}>{route.pace}</span></div><strong>{route.name}</strong><small>{route.theme} · {route.cities.join(' → ')}</small><p>{route.summary}</p><div className="route-metrics"><span><b>{route.fiveScoreIds.length}</b> 个5分点</span><span><b>{route.hotelMoves}</b> 次换酒店</span></div><div className="route-card-foot"><span>{route.longestLeg}</span><b>查看路线 ↗</b></div></button>)}</div></aside>}
 
       <div className="map-stage">
         <div ref={mapNode} className="map-canvas" aria-label="河南旅行互动地图"/>
@@ -120,7 +121,7 @@ export default function Home(){
           <RouteDetail route={activeRoute} activeDay={activeDay} setActiveDay={setActiveDay} focus={focus} selectedDay={selectedDay}/>} 
       </div>
     </section>
-    <footer><span>{viewMode==='places'?'视频档位为作者主观评价；地图分数映射：超级顶/顶级=5，人上人=4，NPC=3，拉=1。':'车程为规划口径，不代表国庆实时路况；出发前请复核车次、预约、天气与索道。'}</span>{viewMode==='places'?<a href={VIDEO_URL} target="_blank" rel="noreferrer">来源：B站《河南省5A景区从夯到拉》</a>:<span>2026 国庆 · 上海出发</span>}</footer>
+    <footer><span>{viewMode==='places'?'视频档位为作者主观评价；地图分数映射：超级顶/顶级=5，人上人=4，NPC=3，拉=1。':'车程为规划口径，不代表国庆实时路况；出发前请复核车次、预约、天气与索道。'}</span>{viewMode==='places'?<a href={VIDEO_URL} target="_blank" rel="noreferrer">来源：B站《河南省5A景区从夯到拉》</a>:<span>{activeRoute.cities[0]}出发 · 2026 国庆</span>}</footer>
   </main>
 }
 
@@ -129,7 +130,7 @@ function PlaceDetail({place}:{place:Place}){return <article className="detail-ca
 function RouteDetail({route,activeDay,setActiveDay,focus,selectedDay}:{route:RoutePlan;activeDay:number|'all';setActiveDay:(day:number|'all')=>void;focus:(place:Place)=>void;selectedDay:RoutePlan['itinerary'][number]|null}){
   const days=selectedDay?[selectedDay]:route.itinerary;
   return <article className="route-detail-card" style={{'--route-color':route.color} as React.CSSProperties}>
-    <div className="route-detail-heading"><div><div className="route-kicker"><span>{route.code}</span>{route.featured&&<b>推荐方案</b>} · {route.theme}</div><h2>{route.name}</h2><p>{route.summary}</p></div><div className="route-score"><strong>{route.fiveScoreIds.length}</strong><span>个 5 分点</span></div></div>
+    <div className="route-detail-heading"><div><div className="route-kicker"><span>{route.code}</span>{route.confirmed?<b className="confirmed-badge">已确定行程</b>:route.featured&&<b>推荐方案</b>} · {route.theme}</div><h2>{route.name}</h2><p>{route.summary}</p></div><div className="route-score"><strong>{route.fiveScoreIds.length}</strong><span>个 5 分点</span></div></div>
     <div className="city-chain">{route.cities.map((city,index)=><span key={city}>{index>0&&<i>→</i>}<b>{city}</b></span>)}</div>
     <div className="day-tabs" role="tablist"><button className={activeDay==='all'?'active':''} onClick={()=>setActiveDay('all')}>全程</button>{route.itinerary.map(day=><button key={day.day} className={activeDay===day.day?'active':''} onClick={()=>setActiveDay(day.day)}>D{day.day}</button>)}</div>
     <div className="itinerary-scroll">{days.map(day=><section className="day-card" key={day.day}><div className="day-index">D{day.day}</div><div className="day-content"><div className="day-title"><div><strong>{day.title}</strong><small>{day.region} · 住 {day.stay}</small></div>{day.placeIds.length>0&&<span>{day.placeIds.length} 个景点</span>}</div><p>{day.summary}</p>{day.placeIds.length>0&&<div className="day-places">{day.placeIds.map(id=>{const p=places.find(item=>item.id===id);return p?<button key={id} onClick={()=>focus(p)}><span className={`mini-score score-${p.score}`}>{p.score}</span>{p.name}<b>定位 ↗</b></button>:null})}</div>}{day.legs.length>0&&<div className="transport-list">{day.legs.map((leg,index)=><div className="transport-leg" key={`${leg.from}-${leg.to}-${index}`}><span className="mode-icon">{modeIcon(leg.mode)}</span><div><strong>{leg.from}<i>→</i>{leg.to}</strong><p><b>{leg.mode}</b> · {leg.normal}{leg.holiday&&<em>国庆：{leg.holiday}</em>}</p>{leg.note&&<small>{leg.note}</small>}</div><a href={amapSearch(leg.to)} target="_blank" rel="noreferrer" aria-label={`在高德地图查看${leg.to}`}>高德 ↗</a></div>)}</div>}</div></section>)}</div>

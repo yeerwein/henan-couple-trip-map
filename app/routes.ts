@@ -1,4 +1,4 @@
-export type TravelMode = '高铁' | '自驾' | '包车' | '景区交通' | '步行';
+export type TravelMode = '高铁' | '自驾' | '包车' | '大巴' | '景区交通' | '步行';
 
 export type TransportLeg = {
   from: string;
@@ -27,6 +27,7 @@ export type RoutePlan = {
   theme: string;
   pace: '舒缓' | '中等' | '较高';
   featured?: boolean;
+  confirmed?: boolean;
   color: string;
   summary: string;
   cities: string[];
@@ -83,7 +84,7 @@ export const routePlans: RoutePlan[] = [
     ],
   },
   {
-    id: 'route-6a', code: '6A', days: 6, name: '龙门＋龙潭＋白云山', theme: '伏牛山精华', pace: '舒缓', featured: true, color: '#aa6f2f',
+    id: 'route-6a', code: '6A', days: 6, name: '龙门＋龙潭＋白云山', theme: '伏牛山精华', pace: '舒缓', color: '#aa6f2f',
     summary: '六日最舒适方案，以洛阳为枢纽，三处高分景点各留足时间。', cities: ['洛阳', '新安', '嵩县'],
     fiveScoreIds: ['longmen', 'longtan-canyon', 'baiyunshan'], hotelMoves: 2, longestLeg: '洛阳→白云山，常规 2–2.5 小时',
     itinerary: [
@@ -214,6 +215,37 @@ export const routePlans: RoutePlan[] = [
       { day: 6, title: '少林寺与三皇寨 → 上海', region: '洛阳 / 登封', placeIds: ['shaolin', 'sanhuangzhai'], stay: '返程', summary: '返程日顺路走嵩山，从郑州东上车；体力有限就只走少林寺。', legs: [
         { from: '洛阳市区', to: '少林寺', mode: '自驾', normal: '约 1–1.7 小时', holiday: '至少预留 2 小时' },
         { from: '郑州东', to: '上海虹桥', mode: '高铁', normal: '约 4–6 小时' },
+      ] },
+    ],
+  },
+  {
+    id: 'route-6f', code: '已定', days: 6, name: '我们的洛阳行程', theme: '河洛人文＋白云山', pace: '中等', featured: true, confirmed: true, color: '#b8434f',
+    summary: '杭州直达高铁进洛阳，前三天把河洛人文看透，第四天进白云山住一晚看日出，第六天返程。全程只换一次住宿区域，是目前 10 条路线里换酒店最少的。',
+    cities: ['杭州', '洛阳', '嵩县'],
+    fiveScoreIds: ['longmen', 'baiyunshan'], hotelMoves: 1, longestLeg: '杭州东→洛阳龙门，高铁约 6 小时 20 分',
+    itinerary: [
+      { day: 1, title: '杭州 → 洛阳 · 龙门石窟', region: '洛阳', placeIds: ['longmen'], stay: '洛阳市区', summary: '按计划 14:00 到龙门站、15:00 进景区。要留意：龙门石窟需分时段实名预约，且 18:30 停止入场，15:00 进场只有约 3.5 小时，想游满 4 小时建议改坐更早的车次。', legs: [
+        { from: '杭州东', to: '洛阳龙门', mode: '高铁', normal: '约 6 小时 20–25 分', note: '直达车 G1874 06:26→12:49、G1882 07:53→14:18、G1894 11:19→17:41；想 15:00 稳进景区，G1874 比 G1882 更保险' },
+        { from: '洛阳龙门站', to: '龙门石窟', mode: '自驾', normal: '约 4 公里 / 打车 10 分钟', holiday: '国庆建议预留 20–30 分钟', note: '公交 71 路可直达但约 42 分钟，赶时间就打车' },
+      ] },
+      { day: 2, title: '洛阳博物馆 → 应天门 → 洛邑古城', region: '洛阳', placeIds: ['luoyang-museum', 'suitang-city', 'luoyi-ancient-city'], stay: '洛阳市区', summary: '洛博 17:00 闭馆、16:30 停止入馆，必须上午去。下午跨洛河看应天门，傍晚步行到洛邑古城夜游，动线是南岸→北岸→老城，不折返。', legs: [
+        { from: '洛阳博物馆', to: '应天门', mode: '自驾', normal: '打车约 20–30 分钟', note: '两点分处洛河南北岸，公交需在王城广场一带换乘' },
+        { from: '应天门', to: '洛邑古城', mode: '步行', normal: '约 2.5 公里 / 步行 30–40 分钟', note: '也可乘地铁 1 号线，应天门站→洛邑古城站直达' },
+      ] },
+      { day: 3, title: '汉魏故城 → 白马寺 → 古墓博物馆', region: '洛阳', placeIds: ['hanwei', 'white-horse', 'ancient-tombs'], stay: '洛阳市区', summary: '把你们原计划的顺序调了一下：国庆白马寺周边有交通管制，官方建议把车停在汉魏洛阳故城遗址博物馆停车场，步行 500 米进白马寺最省事。三个馆都是 17:00 闭馆、16:30 停止入馆，9 点开门就要到，一天塞三个偏紧。', legs: [
+        { from: '汉魏洛阳故城遗址博物馆', to: '白马寺', mode: '步行', normal: '约 500 米 / 6–10 分钟', note: '国庆白马寺区域部分时段限行，先停汉魏博物馆再步行' },
+        { from: '白马寺', to: '洛阳古墓博物馆', mode: '自驾', normal: '打车约 20–30 分钟', note: '一个在城东、一个在北邙山上，是当天最长的一段，务必留足时间' },
+      ] },
+      { day: 4, title: '洛阳 → 白云山', region: '洛阳 / 嵩县', placeIds: ['baiyunshan'], stay: '白云山景区内', summary: '上午就出发，不要等下午。景区直达大巴官方口径 13:30 一班、约 3 小时，坐这班到山上天就快黑了。下午先看瀑布群，第二天清早看日出。', legs: [
+        { from: '洛阳市区', to: '白云山', mode: '自驾', normal: '约 150 公里 / 2.5 小时', holiday: '国庆建议预留 3.5–4 小时', note: '白云天路弯多坡急，到景区后建议换乘景交车上山' },
+        { from: '龙门客运站', to: '白云山', mode: '大巴', normal: '直达大巴约 3 小时 / 45 元', note: '官方口径 13:30 发车，另有 7:40、7:50 早班；各来源时刻不一致，出发前务必电话确认' },
+      ] },
+      { day: 5, title: '白云山日出 → 返回洛阳', region: '嵩县 / 洛阳', placeIds: ['baiyunshan'], stay: '洛阳市区', summary: '清早坐玉皇顶早班索道看日出，上午继续逛小天池一带，下午返回洛阳。10 月山顶清晨可能接近 0℃，冲锋衣或羽绒必备。', legs: [
+        { from: '白云山', to: '洛阳市区', mode: '自驾', normal: '约 2.5 小时', holiday: '国庆建议预留 3–3.5 小时' },
+        { from: '铜河游客服务中心', to: '洛阳市区', mode: '大巴', normal: '12:30、13:30 两班，约 3–4 小时', note: '末班 13:30，错过当天回不了市区，坐大巴的话上午安排要压缩' },
+      ] },
+      { day: 6, title: '洛阳 → 杭州', region: '洛阳', placeIds: [], stay: '返程', summary: '返程日不排景点。想再逛就近选个市区免票点，别安排需要预约的场馆。', legs: [
+        { from: '洛阳龙门', to: '杭州东', mode: '高铁', normal: '约 6 小时 20 分–6 小时 40 分', note: '参考 G3113 洛阳龙门 07:31→杭州东 14:08；具体车次以 12306 为准' },
       ] },
     ],
   },
